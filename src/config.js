@@ -1,7 +1,7 @@
 const config = {
 	//网页元数据
 	metaData: {
-		title: 'ZZJ的空间',
+		title: 'ZZJ的网址导航',
 		description: '欢迎来到ZZJ的奇妙世界！',
 		keywords: 'ZZJ,ZZJ-JACK,个人主页,个人网站',
 		icon: '/img/favicon.ico'   //网页图标，支持外链
@@ -36,10 +36,9 @@ const config = {
 			"datainfo": {
 				"title": "0001",
 				"preview": "/img/wallpaper/static-mobile/0001/image-pre.webp",
-				"url": "/img/wallpaper/static-mobile/0001/image.png"  //同理，随机移动端壁纸："url":"https://t.mwm.moe/mp"
-			}
+				"url": "/img/wallpaper/static-mobile/0001/image.png"
+			},
 		}
-
 	},
 
 	//社交按钮
@@ -131,104 +130,43 @@ const config = {
 	//导航链接
 	navigationLinks: [
 		{
-			name: "常用网站",
-			links: [
-				{ name: "百度", url: "https://www.baidu.com", icon: "mdi-google" },
-				{ name: "Google", url: "https://www.google.com", icon: "mdi-google" },
-				{ name: "GitHub", url: "https://github.com", icon: "mdi-github" },
-				{ name: "B站", url: "https://www.bilibili.com", icon: "mdi-youtube" },
-				{ name: "知乎", url: "https://www.zhihu.com", icon: "mdi-comment-question" },
-				{ name: "CSDN", url: "https://www.csdn.net", icon: "mdi-code-braces" }
-			]
-		},
-		{
-			name: "我的项目",
-			links: [
-				{ name: "Blog", url: "https://blog.zzjjack.dpdns.org", icon: "mdi-blog" },
-				{ name: "Coding", url: "https://gocoding.dpdns.org", icon: "mdi-code" },
-				{ name: "谁是卧底", url: "https://spy.zzjjack.us.kg", icon: "mdi-gamepad-variant" },
-				{ name: "真心话大冒险", url: "https://truthwordstools.zzjjack.dpdns.org", icon: "mdi-heart" }
-			]
-		},
-		{
-			name: "开发工具",
-			links: [
-				{ name: "VS Code", url: "https://code.visualstudio.com", icon: "mdi-microsoft-visual-studio-code" },
-				{ name: "GitHub Desktop", url: "https://desktop.github.com", icon: "mdi-github" },
-				{ name: "Postman", url: "https://www.postman.com", icon: "mdi-application" },
-				{ name: "Docker", url: "https://www.docker.com", icon: "mdi-docker" }
-			]
-		},
-		{
 			name: "网页工具",
 			links: [
-				{ name: "刘明野的工具箱", url: "https://tools.liumingye.cn/", icon: "mdi-tools" },
-				{ name: "在线工具", url: "https://tool.lu/", icon: "mdi-wrench" },
-				{ name: "ALL TO ALL", url: "https://www.alltoall.net/", icon: "mdi-exchange" },
-				{ name: "临时邮箱", url: "https://mail.cx/zh/", icon: "mdi-email" },
-				{ name: "SM.MS", url: "https://smms.app/", icon: "mdi-image" },
-				{ name: "AbeimAPI", url: "https://res.abeim.cn/api/", icon: "mdi-code-json" },
-				{ name: "UApi", url: "https://uapis.cn/zh_cn/", icon: "mdi-code-json" }
+				{ name: "刘明野的工具箱", url: "https://tools.liumingye.cn/", icon: "https://tools.liumingye.cn/favicon.ico" },
+				{ name: "在线工具", url: "https://tool.lu/", icon: "https://tool.lu/favicon.ico" },
+				{ name: "ALL TO ALL", url: "https://www.alltoall.net/", icon: "https://www.alltoall.net/favicon.ico" },
+				{ name: "临时邮箱", url: "https://mail.cx/zh/", icon: "https://mail.cx/favicon.ico" },
+				{ name: "SM.MS", url: "https://smms.app/", icon: "https://smms.app/favicon.ico" },
+				{ name: "AbeimAPI", url: "https://res.abeim.cn/api/", icon: "https://res.abeim.cn/favicon.ico" },
+				{ name: "UApi", url: "https://uapis.cn/zh_cn/", icon: "https://uapis.cn/favicon.ico" }
 			]
 		},
 		{
 			name: "设计素材",
 			links: [
-				{ name: "Pexels", url: "https://www.pexels.com/", icon: "mdi-image-multiple" },
-				{ name: "Flaticon", url: "https://www.flaticon.com/", icon: "mdi-emoticon-outline" },
-				{ name: "可画", url: "https://www.canva.cn/", icon: "mdi-palette" },
-				{ name: "Color Hunt", url: "https://colorhunt.co/", icon: "mdi-palette-outline" },
-				{ name: "TinyPNG", url: "https://tinify.cn/", icon: "mdi-compress" }
+				{ name: "Pexels", url: "https://www.pexels.com/", icon: "https://www.pexels.com/favicon.ico" },
+				{ name: "Flaticon", url: "https://www.flaticon.com/", icon: "https://www.flaticon.com/favicon.ico" },
+				{ name: "可画", url: "https://www.canva.cn/", icon: "https://www.canva.cn/favicon.ico" },
+				{ name: "Color Hunt", url: "https://colorhunt.co/", icon: "https://colorhunt.co/favicon.ico" },
+				{ name: "TinyPNG", url: "https://tinify.cn/", icon: "https://tinify.cn/favicon.ico" }
 			]
 		},
 		{
 			name: "影音游戏",
 			links: [
-				{ name: "小云搜索", url: "https://yunso.net/", icon: "mdi-cloud-search" },
-				{ name: "千帆搜索", url: "https://www.niceso.fun/", icon: "mdi-cloud-search" },
-				{ name: "音乐搜索器", url: "http://www.xmsj.org/", icon: "mdi-music-search" },
-				{ name: "Switch520", url: "https://www.gamer520.com/", icon: "mdi-gamepad-variant" },
-				{ name: "flysheep资源避难所", url: "https://www.flysheep6.com/", icon: "mdi-gamepad-square" }
+				{ name: "小云搜索", url: "https://yunso.net/", icon: "https://yunso.net/favicon.ico" },
+				{ name: "千帆搜索", url: "https://www.niceso.fun/", icon: "https://www.niceso.fun/favicon.ico" },
+				{ name: "音乐搜索器", url: "http://www.xmsj.org/", icon: "http://www.xmsj.org/favicon.ico" },
+				{ name: "Switch520", url: "https://www.gamer520.com/", icon: "https://www.gamer520.com/favicon.ico" },
+				{ name: "flysheep资源避难所", url: "https://www.flysheep6.com/", icon: "https://www.flysheep6.com/favicon.ico" }
 			]
 		},
 		{
 			name: "摸鱼娱乐",
 			links: [
-				{ name: "神奇海螺试验场", url: "https://lab.magiconch.com/", icon: "mdi-flask-round-bottom" },
-				{ name: "Life Restart", url: "https://liferestart.syaro.io/public/", icon: "mdi-restart" },
-				{ name: "FakeUpdate", url: "https://fakeupdate.net/", icon: "mdi-update" }
-			]
-		},
-		{
-			name: "搜索分类工具",
-			links: [
-				{ name: "百度搜索", url: "https://www.baidu.com/s?wd=", icon: "mdi-google" },
-				{ name: "Bing搜索", url: "https://cn.bing.com/search?q=", icon: "mdi-bing" },
-				{ name: "Google搜索", url: "https://www.google.com/search?q=", icon: "mdi-google" },
-				{ name: "BiliBili搜索", url: "https://search.bilibili.com/all?keyword=", icon: "mdi-youtube" },
-				{ name: "Github搜索", url: "https://github.com/search?utf8=%E2%9C%93&q=", icon: "mdi-github" },
-				{ name: "PING检测", url: "https://ping.chinaz.com/", icon: "mdi-network-ping" },
-				{ name: "备案查询", url: "https://icp.chinaz.com/", icon: "mdi-file-document" },
-				{ name: "权重查询", url: "https://rank.chinaz.com/all/", icon: "mdi-chart-line" },
-				{ name: "友链检测", url: "https://link.chinaz.com/", icon: "mdi-link" },
-				{ name: "HTTPS检测", url: "https://stool.chinaz.com/https?url=", icon: "mdi-lock" },
-				{ name: "SEO查询", url: "https://seo.chinaz.com/", icon: "mdi-search-web" },
-				{ name: "知乎搜索", url: "https://www.zhihu.com/search?type=content&q=", icon: "mdi-comment-question" },
-				{ name: "微信搜索", url: "http://weixin.sogou.com/weixin?type=2&query=", icon: "mdi-wechat" },
-				{ name: "微博搜索", url: "http://s.weibo.com/weibo/", icon: "mdi-weibo" },
-				{ name: "豆瓣搜索", url: "https://www.douban.com/search?q=", icon: "mdi-heart" },
-				{ name: "搜外问答", url: "https://ask.seowhy.com/search/?q=", icon: "mdi-comment-text" },
-				{ name: "淘宝搜索", url: "https://s.taobao.com/search?q=", icon: "mdi-cart" },
-				{ name: "京东搜索", url: "https://search.jd.com/Search?keyword=", icon: "mdi-cart" },
-				{ name: "下厨房", url: "http://www.xiachufang.com/search/?keyword=", icon: "mdi-food" },
-				{ name: "香哈菜谱", url: "https://www.xiangha.com/so/?q=caipu&s=", icon: "mdi-food" },
-				{ name: "12306", url: "http://www.12306.cn/?", icon: "mdi-train" },
-				{ name: "去哪儿", url: "https://www.qunar.com/?", icon: "mdi-plane" },
-				{ name: "快递100", url: "http://www.kuaidi100.com/?", icon: "mdi-package" },
-				{ name: "智联招聘", url: "https://sou.zhaopin.com/jobs/searchresult.ashx?kw=", icon: "mdi-briefcase" },
-				{ name: "前程无忧", url: "https://search.51job.com/?", icon: "mdi-briefcase" },
-				{ name: "拉钩网", url: "https://www.lagou.com/jobs/list_", icon: "mdi-briefcase" },
-				{ name: "猎聘网", url: "https://www.liepin.com/zhaopin/?key=", icon: "mdi-briefcase" }
+				{ name: "神奇海螺试验场", url: "https://lab.magiconch.com/", icon: "https://lab.magiconch.com/favicon.ico" },
+				{ name: "Life Restart", url: "https://liferestart.syaro.io/public/", icon: "https://liferestart.syaro.io/favicon.ico" },
+				{ name: "FakeUpdate", url: "https://fakeupdate.net/", icon: "https://fakeupdate.net/favicon.ico" }
 			]
 		}
 	],

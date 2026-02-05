@@ -1,72 +1,117 @@
 import typewriter from './components/typewriter.vue';
-import tab1 from './components/tabs/tab1.vue';
-import tab2 from './components/tabs/tab2.vue';
-import tab3 from './components/tabs/tab3.vue';
 import loader from './components/loader.vue';
 import config from './config.js';
 import { getCookie } from './utils/cookieUtils.js';
-import { setMeta,getFormattedTime,getFormattedDate,dataConsole } from './utils/common.js';
+import { setMeta, dataConsole } from './utils/common.js';
 import { useDisplay } from 'vuetify'
 
 export default {
   components: {
-    tab1,tab2,tab3,loader,typewriter
+    loader, typewriter
   },
   setup() {
-    const { xs,sm,md } = useDisplay();
-    return { xs,sm,md };
+    const { xs, sm } = useDisplay();
+    return { xs, sm };
   },
   data() {
     return {
-      isloading:false,
+      isloading: false,
       isClearScreen: false,
       configdata: config,
-      dialog1: false,
-      dialog2: false,
       videosrc: '',
-      ismusicplayer: false,
-      isPlaying:false,
-      playlistIndex: 0,
-      audioLoading: false,
-      musicinfo: null,
-      musicinfoLoading:false,
-      lyrics:{},
       socialPlatformIcons: null,
       isExpanded: false,
-      stackicons:[
-        {icon:"mdi-vuejs",color:"green", model: false,tip: 'vue'},
-        {icon:"mdi-language-javascript",color:"#CAD300", model: false,tip: 'javascript'},
-        {icon:"mdi-language-css3",color:"blue", model: false,tip: 'css'},
-        {icon:"mdi-language-html5",color:"red", model: false,tip: 'html'},
-        {icon:"$vuetify",color:"#1697F6", model: false,tip: 'vuetify'},
-      ],
       navigationLinks: null,
-      tab: null,
-      tabs: [
-        {
-          icon: 'mdi-pencil-plus',
-          text: '样式',
-          value: 'tab-1',
-          component: "tab1",
-        },
-        {
-          icon: 'mdi-wallpaper',
-          text: '背景',
-          value: 'tab-2',
-          component: "tab2",
-        },
-        {
-          icon: 'mdi-music-circle-outline',
-          text: '音乐',
-          value: 'tab-3',
-          component: "tab3",
-        },
-      ],
-
     };
   },
+
+  computed: {
+    // v-app class
+    appClass() {
+      return { 'radius-before': !this.xs };
+    },
+
+    // v-app style
+    appStyle() {
+      if (this.xs) {
+        return { height: '100%', width: '100%', top: '0', left: '0' };
+      } else if (this.sm) {
+        return { height: '98%', width: '98%', top: '1%', left: '1%' };
+      } else {
+        return { height: '96.6%', width: '99%', top: '1.7%', left: '0.5%' };
+      }
+    },
+
+    // video style
+    videoStyle() {
+      let baseStyle = {};
+      if (this.xs) {
+        baseStyle = { height: '100%', width: '100%', top: '0', left: '0' };
+      } else if (this.sm) {
+        baseStyle = { height: '98%', width: '98%', top: '1%', left: '1%', 'border-radius': '16px' };
+      } else {
+        baseStyle = { height: '96.6%', width: '99%', top: '1.7%', left: '0.5%', 'border-radius': '16px' };
+      }
+      return baseStyle;
+    },
+
+    // switch style
+    switchStyle() {
+      return this.xs ? { transform: 'scale(0.6) translateX(15%)' } : {};
+    },
+
+    // avatar size
+    avatarSize() {
+      return this.xs || this.sm ? 140 : 180;
+    },
+
+    // avatar margin style
+    avatarMargin() {
+      return this.xs || this.sm ? { 'margin-top': '1rem' } : { 'margin-top': '2rem' };
+    },
+
+    // welcome display style
+    welcomeDisplay() {
+      return this.xs || this.sm ? { display: 'none' } : {};
+    },
+
+    // contact margin style
+    contactMargin() {
+      return this.xs || this.sm ? { 'margin-top': '0.5rem' } : { 'margin-top': '1rem' };
+    },
+
+    // social icon size
+    socialIconSize() {
+      return this.xs ? 22 : 28;
+    },
+
+    // social icon inner size
+    socialIconInnerSize() {
+      return this.xs ? 16 : 20;
+    },
+
+    // navigation card style
+    navCardStyle() {
+      return this.xs || this.sm
+        ? { margin: '0.5rem', padding: '1rem' }
+        : { margin: '1rem', padding: '2rem' };
+    },
+
+    // navigation link button style
+    navLinkBtnStyle() {
+      return this.xs || this.sm
+        ? { padding: '1rem', margin: '0.5rem', fontSize: '0.9rem', minHeight: '3.5rem' }
+        : { padding: '1.5rem', margin: '0.75rem', fontSize: '1rem', minHeight: '4rem' };
+    },
+
+    // navigation link icon size
+    navLinkIconSize() {
+      return this.xs || this.sm ? 18 : 20;
+    }
+  },
+
   async mounted() {
-    if(import.meta.env.VITE_CONFIG){
+    if (import.meta.env.VITE_CONFIG) {
       this.configdata = JSON.parse(import.meta.env.VITE_CONFIG);
     }
     this.socialPlatformIcons = this.configdata.socialPlatformIcons;
@@ -74,262 +119,146 @@ export default {
     this.isloading = true;
     let imageurl = "";
     this.dataConsole();
-    this.setMeta(this.configdata.metaData.title,this.configdata.metaData.description,this.configdata.metaData.keywords,this.configdata.metaData.icon);
-    
+    this.setMeta(this.configdata.metaData.title, this.configdata.metaData.description, this.configdata.metaData.keywords, this.configdata.metaData.icon);
+
     imageurl = this.setMainProperty(imageurl);
 
     //异步等待背景壁纸包括视频壁纸加载完成后再显示页面
     const loadImage = () => {
-        const imageUrls = [
-          config.avatar
-        ];
-        return new Promise((resolve, reject) => {
-          const imagePromises = imageUrls.map((url) => {
-            return new Promise((resolve, reject) => {
-                const imgs = new Image();
-                imgs.src = url;
-                imgs.onload = () => resolve();
-                imgs.onerror = (err) => reject(err);
-            });
-          })
-
-          // 设置超时机制：2.5秒
-          const timeoutPromise = new Promise((resolve) => {
-            setTimeout(() => {
-              resolve();
-            }, 2500);
+      const imageUrls = [
+        config.avatar
+      ];
+      return new Promise((resolve, reject) => {
+        const imagePromises = imageUrls.map((url) => {
+          return new Promise((resolve, reject) => {
+            const imgs = new Image();
+            imgs.src = url;
+            imgs.onload = () => resolve();
+            imgs.onerror = (err) => reject(err);
           });
-          
-          // 等待所有图片加载完成或超时
-          Promise.race([Promise.all(imagePromises), timeoutPromise]).then(()=>{
-            if(imageurl){
-              const img = new Image();
-              img.src = imageurl;
-              // resolve() 函数通将一个 Promise 对象从未完成状态转变为已完成状态
-              img.onload = () => {resolve();};
-              img.onerror = (err) => {reject(err);};
-            }else{
-              const video = this.$refs.VdPlayer;
-              video.onloadedmetadata = () => {
-                setTimeout(() => {
-                }, "200");  
-                resolve();
-              };
-              video.onerror = (err) => {resolve();};
-            }
-          })
+        })
+
+        // 设置超时机制：2.5秒
+        const timeoutPromise = new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 2500);
         });
-     };
+
+        // 等待所有图片加载完成或超时
+        Promise.race([Promise.all(imagePromises), timeoutPromise]).then(() => {
+          if (imageurl) {
+            const img = new Image();
+            img.src = imageurl;
+            // resolve() 函数通将一个 Promise 对象从未完成状态转变为已完成状态
+            img.onload = () => { resolve(); };
+            img.onerror = (err) => { reject(err); };
+          } else {
+            const video = this.$refs.VdPlayer;
+            video.onloadedmetadata = () => {
+              setTimeout(() => {
+              }, "200");
+              resolve();
+            };
+            video.onerror = (err) => { resolve(); };
+          }
+        })
+      });
+    };
 
     loadImage().then(() => {
-        setTimeout(() => {
-          this.isloading = false;
-        }, "500");          
-      }).catch((err) => {
-        console.error('壁纸加载失败:', err);
-        setTimeout(() => {
-          this.isloading = false;
-        }, "100");  
-      });
-
-      await this.getMusicInfo();  //获取音乐数据
-      this.setupAudioListener();  //设置 ended 事件监听器，当歌曲播放结束时自动调用 nextTrack 方法。
+      setTimeout(() => {
+        this.isloading = false;
+      }, "500");
+    }).catch((err) => {
+      console.error('壁纸加载失败:', err);
+      setTimeout(() => {
+        this.isloading = false;
+      }, "100");
+    });
   },
 
-  beforeDestroy() {     //在组件销毁前移除事件监听器，防止内存泄漏。
-    if (this.$refs.audioPlayer) {
-      this.$refs.audioPlayer.removeEventListener('ended',  this.nextTrack);
-    }
-  },
-
-  watch:{
-    isClearScreen(val){
-      if(!this.videosrc){
+  watch: {
+    isClearScreen(val) {
+      if (!this.videosrc) {
         return
       }
-      if(val){
-        this.$refs.VdPlayer.style.zIndex = 0; 
+      if (val) {
+        this.$refs.VdPlayer.style.zIndex = 0;
         this.$refs.VdPlayer.controls = true;
-      }else{
-        this.$refs.VdPlayer.style.zIndex = -100; 
+      } else {
+        this.$refs.VdPlayer.style.zIndex = -100;
         this.$refs.VdPlayer.controls = false;
       }
     },
-    audioLoading(val){
-      this.isPlaying = !val;
-    }
-
-  //若弹出框使得页面播放卡顿，可以先停止背景播放
-  //   dialog1(val){
-  //     if(val){
-  //       this.$refs.VdPlayer.pause();
-  //     }else{
-  //       this.$refs.VdPlayer.play();
-  //     }
-  //  }
   },
 
-  computed: {
-    currentSong() {
-      return this.musicinfo && this.musicinfo.length > 0 ? this.musicinfo[this.playlistIndex] : null;
-    },
-    audioPlayer() {
-      return this.$refs.audioPlayer;
-    }
-  },
-  
   methods: {
-    getCookie,setMeta,dataConsole,
+    getCookie, setMeta, dataConsole,
 
-    setMainProperty(imageurl){
+    setMainProperty(imageurl) {
       const root = document.documentElement;
       let leleodata = this.getCookie("leleodata");
-      if(leleodata){
+      if (leleodata) {
         root.style.setProperty('--leleo-welcomtitle-color', `${leleodata.color.welcometitlecolor}`);
         root.style.setProperty('--leleo-vcard-color', `${leleodata.color.themecolor}`);
         root.style.setProperty('--leleo-brightness', `${leleodata.brightness}%`);
-        root.style.setProperty('--leleo-blur', `${leleodata.blur}px`); 
-      }else{
+        root.style.setProperty('--leleo-blur', `${leleodata.blur}px`);
+      } else {
         root.style.setProperty('--leleo-welcomtitle-color', `${this.configdata.color.welcometitlecolor}`);
-        root.style.setProperty('--leleo-vcard-color', `${this.configdata.color.themecolor}`);  
-        root.style.setProperty('--leleo-brightness', `${this.configdata.brightness}%`);  
+        root.style.setProperty('--leleo-vcard-color', `${this.configdata.color.themecolor}`);
+        root.style.setProperty('--leleo-brightness', `${this.configdata.brightness}%`);
         root.style.setProperty('--leleo-blur', `${this.configdata.blur}px`);
       }
-  
+
       let leleodatabackground = this.getCookie("leleodatabackground");
       const { xs } = useDisplay();
-      if(leleodatabackground){
-        if(xs.value){
-          if(leleodatabackground.mobile.type == "pic"){
+      if (leleodatabackground) {
+        if (xs.value) {
+          if (leleodatabackground.mobile.type == "pic") {
             root.style.setProperty('--leleo-background-image-url', `url('${leleodatabackground.mobile.datainfo.url}')`);
             imageurl = leleodatabackground.mobile.datainfo.url;
             return imageurl;
-          }else{
+          } else {
             this.videosrc = leleodatabackground.mobile.datainfo.url;
           }
-        }else{
-          if(leleodatabackground.pc.type == "pic"){
+        } else {
+          if (leleodatabackground.pc.type == "pic") {
             root.style.setProperty('--leleo-background-image-url', `url('${leleodatabackground.pc.datainfo.url}')`);
             imageurl = leleodatabackground.pc.datainfo.url;
             return imageurl;
-          }else{
+          } else {
             this.videosrc = leleodatabackground.pc.datainfo.url;
           }
         }
-          
-      }else{
-        if(xs.value){
-          if(this.configdata.background.mobile.type == "pic"){
+
+      } else {
+        if (xs.value) {
+          if (this.configdata.background.mobile.type == "pic") {
             root.style.setProperty('--leleo-background-image-url', `url('${this.configdata.background.mobile.datainfo.url}')`);
             imageurl = this.configdata.background.mobile.datainfo.url;
             return imageurl;
-          }else{
+          } else {
             this.videosrc = this.configdata.background.mobile.datainfo.url;
           }
-        }else{
-          if(this.configdata.background.pc.type == "pic"){
+        } else {
+          if (this.configdata.background.pc.type == "pic") {
             root.style.setProperty('--leleo-background-image-url', `url('${this.configdata.background.pc.datainfo.url}')`);
             imageurl = this.configdata.background.pc.datainfo.url;
             return imageurl;
-          }else{
+          } else {
             this.videosrc = this.configdata.background.pc.datainfo.url;
           }
-          
+
         }
       }
     },
 
-    projectcardsShow(key){
-      this.projectcards.forEach((item,index)=>{
-        if(index!= key){
-          item.show = false;
-        }
-      })
-    },
-    handleCancel(){
-      this.dialog1 = false;
-    },
-    jump(url){
+    jump(url) {
       window.open(url, '_blank').focus();
     },
-    
-    async getMusicInfo(){
-      this.musicinfoLoading = true;
-      try {
-        const response = await fetch(`https://api.i-meto.com/meting/api?server=${this.configdata.musicPlayer.server}&type=${this.configdata.musicPlayer.type}&id=${this.configdata.musicPlayer.id}`
-        );
-        if (!response.ok) {
-          throw new Error('网络请求失败');
-        }
-        this.musicinfo = await response.json();
-        this.musicinfoLoading = false;
-      } catch (error) {
-        console.error('请求失败:', error);
-      }
-      
-    },
-    musicplayershow(val) {
-        this.ismusicplayer = val;
-    },
-
-    setupAudioListener() {
-      if (this.$refs.audioPlayer) {
-        this.$refs.audioPlayer.addEventListener('ended', this.nextTrack);
-      }
-    },
-
-    togglePlay() {
-      if (!this.isPlaying && this.audioPlayer) {
-        this.audioPlayer.play();
-        this.isVdMuted = true;
-      } else if (this.audioPlayer) {
-        this.audioPlayer.pause();
-        this.isVdMuted = false;
-      }
-      this.isPlaying = !this.musicinfoLoading && !this.isPlaying;
-    },
-    previousTrack() {
-      if (this.musicinfo && this.musicinfo.length > 0) {
-        this.playlistIndex = this.playlistIndex > 0 ? this.playlistIndex - 1 : this.musicinfo.length - 1;
-        this.updateAudio();
-      }
-    },
-    nextTrack() {
-      if (this.musicinfo && this.musicinfo.length > 0) {
-        this.playlistIndex = this.playlistIndex < this.musicinfo.length - 1 ? this.playlistIndex + 1 : 0;
-        this.updateAudio();
-      }
-    },
-    updateAudio() {
-      if (this.currentSong && this.audioPlayer) {
-        this.audioPlayer.src = this.currentSong.url;
-        if (this.$refs.audiotitle) {
-          this.$refs.audiotitle.innerText = this.currentSong.title;
-        }
-        if (this.$refs.audioauthor) {
-          this.$refs.audioauthor.innerText = this.currentSong.author;
-        }
-        this.isPlaying = true;
-        this.audioPlayer.play();
-      }
-    },
-    updateCurrentIndex(index) {
-      this.playlistIndex = index;
-      this.updateAudio();
-    },
-    updateIsPlaying(isPlaying) {
-      this.isPlaying = isPlaying;
-    },
-    updateLyrics(lyrics){
-      this.lyrics = lyrics;
-    },
-    // 监听等待事件（缓冲不足）
-    onWaiting() {
-      this.audioLoading = true;
-    },
-    // 监听可以播放事件（缓冲足够）
-    onCanPlay() {
-      this.audioLoading = false;
+    goHome() {
+      window.location.href = 'https://zzjjack.us.kg';
     },
     expandSwitch() {
       this.isExpanded = true;

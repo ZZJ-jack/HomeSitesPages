@@ -1,6 +1,7 @@
 <template>
-  <v-app class="vapp-fullscreen-background" style="overflow: hidden;" :class="{ 'radius-before': !xs }"
-  :style="xs?{height: '100%',width: '100%',top: '0',left:'0'}:(sm?{height: '98%',width: '98%',top: '1%',left:' 1%'}:{height: '96.6%',width: '99%',top: '1.7%',left:' 0.5%'})">
+  <v-app class="vapp-fullscreen-background" style="overflow: hidden;" :class="appClass"
+    :style="appStyle"
+  >
     <transition name="fade">
       <div class="loading" v-show="isloading">
         <loader></loader>
@@ -8,119 +9,83 @@
     </transition>
 
     <video autoplay loop muted class="video-bg" id="bg-video" ref="VdPlayer"
-    :style="xs?{height: '100%',width: '100%',top: '0',left:'0'}:(sm?{height: '98%',width: '98%',top: '1%',left:' 1%','border-radius': '16px'}:{height: '96.6%',width: '99%',top: '1.7%',left:' 0.5%','border-radius': '16px',})">
-        <source :src=videosrc type="video/mp4">
+      :style="videoStyle"
+    >
+      <source :src="videosrc" type="video/mp4">
     </video>
 
+    <!-- 主页按钮 - 左上角，大号 -->
+    <div class="home-btn-container">
+      <v-btn size="large" color="var(--leleo-vcard-color)" variant="tonal"
+        icon="mdi-home" @click="goHome"
+      ></v-btn>
+    </div>
+
     <div class="floating-switch-container">
-      <v-switch
-        v-model="isClearScreen"
-        inset
-        :style="xs?{'transform':'scale(0.6) translateX(15%)'}:{}"
-        class="floating-switch"
-        @mouseover="expandSwitch"
-        @mouseleave="collapseSwitch"
+      <v-switch v-model="isClearScreen" inset :style="switchStyle"
+        class="floating-switch" @mouseover="expandSwitch" @mouseleave="collapseSwitch"
       ></v-switch>
     </div>
-    
-    <div v-show="!isloading && !isClearScreen" :style="xs||sm?{'overflow-y': 'auto','overflow-x': 'hidden'}:{}">
-      <!-- 顶部区域：打字机效果 -->
-      <div class="top-typewriter-container" align="center">
-        <typewriter></typewriter>
-      </div>
 
-      <!-- 主要内容区域 -->
-      <v-row>
-        <!-- 左侧区域：头像和设置按钮 -->
-        <v-col cols="12" md="3" lg="2" class="left-sidebar" align="center">
-          <!-- 头像 -->
-          <v-avatar class="leleo-left-avatar" :size="xs||sm?80:100" :style="xs||sm?{'margin-top': '1rem'}:{'margin-top': '2rem'}" @mouseenter="musicplayershow(1)" @mouseleave="musicplayershow(0)">
-              <v-img :class="{'leleo-spin':isPlaying}"
-              alt="Leleo"
-              :src=configdata.avatar
-              ></v-img>
-              <!-- 由于当ismusicplayer显示后，fadein无效果，所以需要设置一个过渡动画 -->
-              <transition name="fade">
-              <v-card v-show="ismusicplayer" class="musicplayer" :class="{'fade-in':ismusicplayer}" variant="tonal">
-                  <div v-if="audioLoading" class="loading-spinner">
-                      <v-progress-circular indeterminate></v-progress-circular>
-                  </div>
-                  <span ref="audiotitle" class="musicplayer-text"
-                    style="top: 1.6rem;font-weight: bolder;"
-                  >{{ musicinfo?.[0]?.title }}</span>
-                  <span ref="audioauthor" class="musicplayer-text"
-                    style="bottom: 1.4rem;"
-                  >{{ musicinfo?.[0]?.author }}</span>
-                  <audio v-show="false" ref="audioPlayer" :src="musicinfo?.[0]?.url"
-                  @waiting="onWaiting"
-                  @canplay="onCanPlay">
-                  </audio>
-                  <v-btn :size="xs||sm?22:30" color="#999999" icon @click="previousTrack()">
-                  <v-icon>mdi-skip-previous</v-icon>
-                  </v-btn>
-                  <v-btn :size="xs||sm?35:48" color="#999999" icon @click="togglePlay()">
-                  <v-icon>{{ isPlaying? 'mdi-pause' : 'mdi-play' }}</v-icon>
-                  </v-btn>
-                  <v-btn :size="xs||sm?22:30" color="#999999" icon @click="nextTrack()">
-                  <v-icon>mdi-skip-next</v-icon>
-                  </v-btn>
-              </v-card>
-              </transition>
-            </v-avatar>
+    <div v-show="!isloading && !isClearScreen" class="main-container">
+      <div class="content-wrapper">
+        <!-- 左侧区域 - 固定 -->
+        <div class="left-sidebar">
+          <div class="left-content-wrapper">
+            <!-- 头像 -->
+            <div class="avatar-container" align="center">
+              <v-avatar class="leleo-avatar" :size="avatarSize"
+                :style="avatarMargin"
+              >
+                <v-img alt="Leleo" :src="configdata.avatar"></v-img>
+              </v-avatar>
+            </div>
+
+            <!-- 欢迎标题 -->
+            <div :style="welcomeDisplay" class="leleo-left-welcome" align="center">
+              {{ configdata.welcometitle }}
+            </div>
+
+            <!-- 打字机效果 -->
+            <typewriter class="ma-2 d-flex align-center justify-center" style="min-height: 120px;"></typewriter>
 
             <!-- 联系方式 -->
-            <div class="contact-container" :style="xs||sm?{'margin-top': '1rem'}:{'margin-top': '2rem'}">
+            <div class="contact-container" :style="contactMargin" align="center">
               <v-row align="center" justify="center">
-                <v-col class="pa-1" cols="auto" v-for="item in socialPlatformIcons">
-                  <v-btn :size="xs?20:25" variant="tonal" color="var(--leleo-vcard-color)"
-                  class="ma-1 leleo-social-bticon"
-                  icon
-                  :href="item.link" target="_blank"
+                <v-col class="pa-1" cols="auto" v-for="(item, index) in socialPlatformIcons" :key="index">
+                  <v-btn :size="socialIconSize" variant="tonal" color="var(--leleo-vcard-color)" class="ma-1 leleo-social-bticon"
+                    icon :href="item.link" target="_blank"
                   >
-                    <v-icon :icon=item.icon :size="xs?16:20" class="social-bticon-icon"></v-icon>
+                    <v-icon :icon="item.icon" :size="socialIconInnerSize" class="social-bticon-icon"></v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
             </div>
+          </div>
+        </div>
 
-            <!-- 设置按钮 -->
-            <div class="settings-container" :style="xs||sm?{'margin-top': '1rem'}:{'margin-top': '2rem'}">
-              <v-speed-dial
-                  :location="xs||sm ?'top center':'right center'"
-                  transition="slide-y-transition"
-              >
-              <template v-slot:activator="{ props: activatorProps }">
-                  <v-fab style="width: 2.5rem;height: 2.5rem;" color="var(--leleo-vcard-color)"
-                  variant="tonal"
-                  v-bind="activatorProps"
-                  icon="mdi-cog"
-                  ></v-fab>
-              </template>
-              <v-btn variant="tonal" class="setbtn" key="1" icon="mdi-key-chain" @click="dialog1 = true" size="31" color="var(--leleo-vcard-color)"></v-btn>
-              <v-btn variant="tonal" class="setbtn" key="2" icon="mdi-information" @click="dialog2 = true" size="31" color="var(--leleo-vcard-color)"></v-btn>
-              <v-btn variant="tonal" class="setbtn" key="3" icon="$error" size="31" color="var(--leleo-vcard-color)"></v-btn>
-              </v-speed-dial>
-            </div>
-        </v-col>
-
-        <!-- 右侧区域：导航链接 -->
-        <v-col cols="12" md="9" lg="10">
-          <div class="navigation-container">
+        <!-- 右侧区域 - 可滚动 -->
+        <div class="right-content">
+          <div class="navigation-wrapper">
             <v-container>
-              <v-card v-for="category in navigationLinks" :key="category.name" class="navigation-card ma-3" variant="tonal" :style="xs||sm?{'margin':'0.75rem','padding':'1rem'}:{'margin':'1rem','padding':'1.5rem'}">
+              <v-card v-for="(category, catIndex) in navigationLinks" :key="catIndex" class="navigation-card ma-3"
+                variant="tonal"
+                :style="navCardStyle"
+              >
                 <v-card-title class="navigation-category-title">{{ category.name }}</v-card-title>
                 <v-card-text>
                   <v-row>
-                    <v-col v-for="link in category.links" :key="link.name" cols="6" md="4" lg="3" class="pa-3">
-                      <v-btn 
-                        class="navigation-link-btn" 
-                        variant="tonal" 
-                        :color="'var(--leleo-vcard-color)'" 
-                        :href="link.url" 
-                        target="_blank"
-                        :style="xs||sm?{'padding':'1rem','margin':'0.75rem','font-size':'1rem'}:{'padding':'1.75rem','margin':'1rem','font-size':'1.1rem'}"
+                    <v-col v-for="(link, linkIndex) in category.links" :key="linkIndex" cols="6" md="4" lg="3" class="pa-2">
+                      <v-btn class="navigation-link-btn" variant="tonal" :color="'var(--leleo-vcard-color)'"
+                        :href="link.url" target="_blank"
+                        :style="navLinkBtnStyle"
                       >
-                        <v-icon v-if="link.icon" :icon="link.icon" class="mr-2" :size="xs||sm?20:24"></v-icon>
+                        <v-img v-if="link.icon && link.icon.startsWith('http')" :src="link.icon" class="mr-2"
+                          width="24" height="24" contain
+                        ></v-img>
+                        <v-icon v-else-if="link.icon" :icon="link.icon" class="mr-2"
+                          :size="navLinkIconSize"
+                        ></v-icon>
                         <span>{{ link.name }}</span>
                       </v-btn>
                     </v-col>
@@ -129,147 +94,9 @@
               </v-card>
             </v-container>
           </div>
-        </v-col>
-      </v-row>
+        </div>
+      </div>
     </div>
-
-    <v-dialog
-        v-model="dialog1"
-        width="1000"
-        heihght="700"
-      >
-      <v-card elevation="3" style="backdrop-filter: blur(10px);">
-        <v-tabs
-          v-model="tab"
-          :items="tabs"
-          align-tabs="center"
-          height="60"
-          slider-color=var(--leleo-vcard-color)
-        >
-          <template v-slot:tab="{ item }">
-            <v-tab
-              :prepend-icon="item.icon"
-              :text="item.text"
-              :value="item.value"
-              class="text-none"
-            ></v-tab>
-          </template>
-          
-          <template v-slot:item="{ item }">
-            <v-tabs-window-item :value="item.value" class="pa-4">
-              <div v-if="item.value=='tab-3' && musicinfoLoading" class="loading-spinner" align="center">
-                  <v-progress-circular indeterminate></v-progress-circular>
-              </div>
-              <!-- 通过组件绑定不同tab项的组件 -->
-              <component v-if="item.value!='tab-3' || (item.value=='tab-3' && !musicinfoLoading)" :is=item.component @cancel="handleCancel" 
-              :musicinfo="item.value=='tab-3'?musicinfo:[]"
-              :currentIndex="item.value=='tab-3'?playlistIndex:null"
-              :isPlaying="item.value=='tab-3'?isPlaying:null"
-              :audioPlayer="item.value=='tab-3'?audioPlayer:null"
-              :fromLyrics="item.value=='tab-3'?lyrics:null"
-              :audioLoading="item.value=='tab-3'?audioLoading:null"
-              @update:current-index="updateCurrentIndex"
-              @update:is-playing="updateIsPlaying"
-              @update:current-lyrics="updateLyrics"
-              ></component>
-            </v-tabs-window-item>
-          </template>
-        </v-tabs>
-      </v-card>
-      </v-dialog>
-
-      <v-dialog
-        v-model="dialog2"
-        width="700"
-        heihght="500"
-      >
-      <v-card class="ma-3 pa-2" hover
-          variant="tonal"
-          rounded="lg"
-          style="text-align: center;backdrop-filter: blur(10px);"
-        >
-          <template v-slot:title >
-            <span class="leleo-card-title">关于</span>
-          </template>
-          <div style="display: flex;flex-direction: column;align-items: center;">
-            <v-card class="ma-3 pa-2" hover
-              variant="tonal"
-              max-width="400"
-              rounded="lg"
-              style="text-align: center;"
-              >
-              <template v-slot:subtitle>
-                <span class="leleo-card-subtitle">本页基于以下技术及服务搭建</span>
-              </template>
-              <div>
-                <v-tooltip  v-for="item in stackicons" v-model="item.model" location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn icon v-bind="props" :color=item.color rounded="lg" class="ma-1 stack-btn" size="35">
-                      <v-icon size="25" color="white">{{item.icon}}</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{item.tip}}</span>
-                </v-tooltip>
-                <!-- 自定义 -->
-                <v-tooltip location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" rounded="lg" class="ma-1 stack-btn" size="35">
-                      <v-avatar image="/img/stackicon/vite.svg" rounded="0" size="23"></v-avatar>
-                    </v-btn>
-                  </template>
-                  <span>vite</span>
-                </v-tooltip>
-                <v-tooltip location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" rounded="lg" class="ma-1 stack-btn" size="35" color="#254B7C">
-                      <span style="font-size: 8px;font-weight: bolder;">{less}</span>
-                    </v-btn>
-                  </template>
-                  <span>less</span>
-                </v-tooltip>
-                <v-tooltip location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" rounded="lg" class="ma-1 stack-btn" size="35">
-                      <v-avatar image="/img/stackicon/mdi.svg" rounded="0" size="35"></v-avatar>
-                    </v-btn>
-                  </template>
-                  <span>mdi</span>
-                </v-tooltip>
-                <v-tooltip location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" rounded="lg" class="ma-1 stack-btn" size="35">
-                      <v-avatar image="/img/stackicon/chartjs.png" rounded="0" size="23"></v-avatar>
-                    </v-btn>
-                  </template>
-                  <span>chartjs</span>
-                </v-tooltip>
-                <v-tooltip location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" rounded="lg" class="ma-1 stack-btn" size="35" color="#0F1225">
-                      <v-avatar image="/img/stackicon/meting.png" rounded="0" size="23"></v-avatar>
-                    </v-btn>
-                  </template>
-                  <span>meting</span>
-                </v-tooltip>
-                <v-tooltip location="top">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" rounded="lg" class="ma-1 stack-btn" size="35" color="#070707">
-                      <v-avatar image="/img/stackicon/uiverse.png" rounded="0" size="23"></v-avatar>
-                    </v-btn>
-                  </template>
-                  <span>uiverse</span>
-                </v-tooltip>
-              </div>
-            </v-card>
-
-            <p class="ma-6">
-                <span v-for="item in configdata.statement">
-                  {{ item }}<br>
-                </span>
-            </p>
-          </div>
-        </v-card>
-    </v-dialog>
   </v-app>
 </template>
 
@@ -278,51 +105,128 @@
   @import url(/css/app.less);
   @import url(/css/mobile.less);
 
-  /* 导航链接区域样式 */
-  .navigation-container {
-    margin: 2rem 0;
+  /* 主页按钮容器 - 左上角 */
+  .home-btn-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+  }
+
+  /* 主容器 */
+  .main-container {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .content-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+
+  /* 左侧边栏 - 固定 */
+  .left-sidebar {
+    height: 100vh;
+    width: 25%;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .left-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .avatar-container {
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .leleo-avatar {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .leleo-avatar:hover {
+    transform: scale(1.05);
+  }
+
+  /* 欢迎标题 - 使用原来的字体 */
+  .leleo-left-welcome {
+    margin-top: 10px;
+    width: 100%;
+    color: var(--leleo-welcomtitle-color);
+    padding: 0 2rem;
+    font-family: "myfont";
+    font-size: 4rem;
+    text-align: center;
+  }
+
+  /* 右侧内容 - 可滚动 */
+  .right-content {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 0 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+
+  .right-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .right-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .right-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  /* 导航链接区域样式 */
+  .navigation-wrapper {
+    min-height: 100%;
+    padding: 1rem 0;
   }
 
   .navigation-card {
     border-radius: 12px;
     backdrop-filter: blur(var(--leleo-blur));
-    transition: all 0.3s ease;
-  }
-
-  .navigation-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
   }
 
   .navigation-category-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     color: var(--leleo-vcard-color);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .navigation-link-btn {
-    border-radius: 8px;
+    border-radius: 10px;
     width: 100%;
     text-align: left;
     transition: all 0.3s ease;
+    justify-content: flex-start;
+    height: auto;
   }
 
   .navigation-link-btn:hover {
-    transform: translateX(5px);
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  /* 顶部打字机区域样式 */
-  .top-typewriter-container {
-    margin: 2rem 0;
-    padding: 0 1rem;
-  }
-
-  /* 左侧边栏样式 */
-  .left-sidebar {
-    padding: 1rem;
+    transform: translateX(3px);
+    background-color: rgba(255, 255, 255, 0.15);
   }
 
   /* 联系方式容器样式 */
@@ -331,31 +235,52 @@
     border-radius: 8px;
     padding: 0.5rem;
     backdrop-filter: blur(var(--leleo-blur));
-  }
-
-  /* 设置按钮容器样式 */
-  .settings-container {
-    margin-top: 1rem;
+    max-width: 200px;
   }
 
   /* 响应式设计 */
-  @media (max-width: 768px) {
-    .navigation-container {
-      margin: 1rem 0;
+  @media (max-width: 960px) {
+    .content-wrapper {
+      flex-direction: column;
+    }
+
+    .left-sidebar {
+      width: 100%;
+      height: auto;
+      min-width: auto;
+      padding: 1rem 0;
+    }
+
+    .right-content {
+      height: auto;
+      overflow: visible;
       padding: 0 0.5rem;
     }
 
-    .top-typewriter-container {
-      margin: 1rem 0;
-      padding: 0 0.5rem;
+    .main-container {
+      height: auto;
+      overflow: visible;
+    }
+
+    .navigation-wrapper {
+      padding: 0.5rem 0;
     }
 
     .navigation-category-title {
       font-size: 1.2rem;
     }
 
-    .left-sidebar {
-      padding: 0.5rem;
+    .contact-container {
+      max-width: 180px;
     }
-}
+
+    .leleo-left-welcome {
+      font-size: 2.5rem;
+    }
+
+    .home-btn-container {
+      top: 10px;
+      left: 10px;
+    }
+  }
 </style>
