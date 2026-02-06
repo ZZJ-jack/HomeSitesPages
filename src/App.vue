@@ -20,7 +20,7 @@
         icon="mdi-home" @click="goHome"
       ></v-btn>
       <a href="https://blog.zzjjack.us.kg" target="_blank" class="blog-link">博客</a>
-      <span class="navigation-main-title-left">网址导航</span>
+      <span class="navigation-main-title-left">ZZJ的网址导航</span>
     </div>
 
     <div class="floating-switch-container">
