@@ -20,6 +20,7 @@
         icon="mdi-home" @click="goHome"
       ></v-btn>
       <span class="navigation-main-title-left">网址导航</span>
+      <a href="https://blog.zzjjack.us.kg" target="_blank" class="blog-link">博客</a>
     </div>
 
     <div class="floating-switch-container">
@@ -163,6 +164,27 @@
   .zzj-nav-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* 博客链接样式 */
+  .blog-link {
+    font-family: "ZHBGBXT";
+    font-size: 1.2rem;
+    color: var(--leleo-vcard-color);
+    text-decoration: none;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--leleo-vcard-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .blog-link:hover {
+    background: var(--leleo-vcard-color);
+    color: #000;
   }
 
   /* 左上角网址导航标题样式 */
