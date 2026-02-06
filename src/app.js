@@ -22,6 +22,9 @@ export default {
       socialPlatformIcons: null,
       isExpanded: false,
       navigationLinks: null,
+      showBackToTop: false,
+      categoryRefs: [],
+      statement: config.statement,
     };
   },
 
@@ -62,12 +65,12 @@ export default {
 
     // avatar size
     avatarSize() {
-      return this.xs || this.sm ? 140 : 180;
+      return this.xs || this.sm ? 180 : 220;
     },
 
     // avatar margin style
     avatarMargin() {
-      return this.xs || this.sm ? { 'margin-top': '1rem' } : { 'margin-top': '2rem' };
+      return this.xs || this.sm ? { 'margin-top': '0.5rem' } : { 'margin-top': '0.5rem' };
     },
 
     // welcome display style
@@ -100,13 +103,13 @@ export default {
     // navigation link button style
     navLinkBtnStyle() {
       return this.xs || this.sm
-        ? { padding: '1rem', margin: '0.5rem', fontSize: '0.9rem', minHeight: '3.5rem' }
-        : { padding: '1.5rem', margin: '0.75rem', fontSize: '1rem', minHeight: '4rem' };
+        ? { padding: '1rem', margin: '0.5rem', fontSize: '0.9rem', minHeight: '5rem' }
+        : { padding: '1.5rem', margin: '0.75rem', fontSize: '1rem', minHeight: '6rem' };
     },
 
     // navigation link icon size
     navLinkIconSize() {
-      return this.xs || this.sm ? 18 : 20;
+      return this.xs || this.sm ? 20 : 24;
     }
   },
 
@@ -258,13 +261,44 @@ export default {
       window.open(url, '_blank').focus();
     },
     goHome() {
-      window.location.href = 'https://zzjjack.us.kg';
+      window.open('https://zzjjack.us.kg', '_blank').focus();
     },
     expandSwitch() {
       this.isExpanded = true;
     },
     collapseSwitch() {
       this.isExpanded = false;
+    },
+    handleScroll() {
+      const rightContent = this.$refs.rightContent;
+      if (rightContent) {
+        this.showBackToTop = rightContent.scrollTop > 100;
+      }
+    },
+    scrollToTop() {
+      const rightContent = this.$refs.rightContent;
+      if (rightContent) {
+        rightContent.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    },
+    setCategoryRef(el, index) {
+      if (el) {
+        this.categoryRefs[index] = el;
+      }
+    },
+    scrollToCategory(index) {
+      const categoryEl = this.categoryRefs[index];
+      const rightContent = this.$refs.rightContent;
+      if (categoryEl && rightContent) {
+        const scrollTop = categoryEl.offsetTop - 20;
+        rightContent.scrollTo({
+          top: scrollTop,
+          behavior: 'smooth'
+        });
+      }
     },
   }
 };

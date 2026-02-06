@@ -8,6 +8,11 @@
     src: url("../fonts/Digital-Play-Italic-St-1.ttf");
     font-display: swap;
 }
+@font-face {
+    font-family: "ZHBGBXT";
+    src: url("../fonts/字魂白鸽天行体.ttf");
+    font-display: swap;
+}
 
 :root {
     /*

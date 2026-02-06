@@ -14,11 +14,12 @@
       <source :src="videosrc" type="video/mp4">
     </video>
 
-    <!-- 主页按钮 - 左上角，大号 -->
+    <!-- 主页按钮和标题 - 左上角 -->
     <div class="home-btn-container">
-      <v-btn size="large" color="var(--leleo-vcard-color)" variant="tonal"
+      <v-btn class="zzj-nav-btn" color="var(--leleo-vcard-color)" variant="tonal"
         icon="mdi-home" @click="goHome"
       ></v-btn>
+      <span class="navigation-main-title-left">网址导航</span>
     </div>
 
     <div class="floating-switch-container">
@@ -32,6 +33,21 @@
         <!-- 左侧区域 - 固定 -->
         <div class="left-sidebar">
           <div class="left-content-wrapper">
+            <!-- 分类导航按钮 -->
+            <div class="category-nav-container">
+              <v-btn
+                v-for="(category, index) in navigationLinks"
+                :key="index"
+                class="category-nav-btn"
+                variant="tonal"
+                color="var(--leleo-vcard-color)"
+                size="small"
+                @click="scrollToCategory(index)"
+              >
+                {{ category.name }}
+              </v-btn>
+            </div>
+
             <!-- 头像 -->
             <div class="avatar-container" align="center">
               <v-avatar class="leleo-avatar" :size="avatarSize"
@@ -61,21 +77,27 @@
                 </v-col>
               </v-row>
             </div>
+
+            <!-- 版权信息 -->
+            <div class="copyright-info" align="center">
+              {{ statement[0] }}
+            </div>
           </div>
         </div>
 
         <!-- 右侧区域 - 可滚动 -->
-        <div class="right-content">
+        <div class="right-content" ref="rightContent" @scroll="handleScroll">
           <div class="navigation-wrapper">
             <v-container>
-              <v-card v-for="(category, catIndex) in navigationLinks" :key="catIndex" class="navigation-card ma-3"
-                variant="tonal"
-                :style="navCardStyle"
-              >
-                <v-card-title class="navigation-category-title">{{ category.name }}</v-card-title>
+              <div v-for="(category, catIndex) in navigationLinks" :key="catIndex" :ref="el => setCategoryRef(el, catIndex)" class="category-section">
+                <v-card class="navigation-card ma-3"
+                  variant="tonal"
+                  :style="navCardStyle"
+                >
+                  <v-card-title class="navigation-category-title">{{ category.name }}</v-card-title>
                 <v-card-text>
                   <v-row>
-                    <v-col v-for="(link, linkIndex) in category.links" :key="linkIndex" cols="6" md="4" lg="3" class="pa-2">
+                    <v-col v-for="(link, linkIndex) in category.links" :key="linkIndex" cols="6" md="4" lg="3" class="pa-2 d-flex flex-column">
                       <v-btn class="navigation-link-btn" variant="tonal" :color="'var(--leleo-vcard-color)'"
                         :href="link.url" target="_blank"
                         :style="navLinkBtnStyle"
@@ -92,9 +114,23 @@
                   </v-row>
                 </v-card-text>
               </v-card>
-            </v-container>
-          </div>
+            </div>
+          </v-container>
         </div>
+      </div>
+
+      <!-- 回到顶部按钮 -->
+        <transition name="fade">
+          <div v-show="showBackToTop" class="back-to-top-container" @click="scrollToTop">
+            <v-btn
+              size="default"
+              color="var(--leleo-vcard-color)"
+              variant="tonal"
+              icon="mdi-chevron-up"
+              class="back-to-top-btn"
+            ></v-btn>
+          </div>
+        </transition>
       </div>
     </div>
   </v-app>
@@ -107,13 +143,43 @@
 
   /* 主页按钮容器 - 左上角 */
   .home-btn-container {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  /* 主容器 */
+  /* 返回主页按钮样式 */
+  .zzj-nav-btn {
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .zzj-nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* 左上角网址导航标题样式 */
+  .navigation-main-title-left {
+    font-family: "ZHBGBXT";
+    font-size: 2rem;
+    font-weight: normal;
+    color: var(--leleo-vcard-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-top: -8px;
+    }
+  
+    /* 主容器 */
   .main-container {
     height: 100vh;
     overflow: hidden;
@@ -143,6 +209,37 @@
     align-items: center;
     padding: 1rem;
     width: 100%;
+    margin-left: 200px;
+  }
+
+  /* 分类导航按钮容器 */
+  .category-nav-container {
+    position: fixed;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .category-nav-btn {
+    min-width: 80px;
+    font-size: 0.8rem;
+    text-transform: none;
+    letter-spacing: 0;
+    transition: all 0.3s ease;
+  }
+
+  .category-nav-btn:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 
   .avatar-container {
@@ -194,16 +291,93 @@
     border-radius: 3px;
   }
 
+  /* 版权信息样式 */
+  .copyright-info {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--leleo-vcard-color);
+    opacity: 0.7;
+    text-align: center;
+  }
+
   /* 导航链接区域样式 */
   .navigation-wrapper {
     min-height: 100%;
     padding: 1rem 0;
   }
 
+  /* 回到顶部按钮容器 */
+  .back-to-top-container {
+    position: fixed;
+    right: 10px;
+    bottom: 20%;
+    z-index: 99;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+
+  .back-to-top-container:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .back-to-top-btn {
+    border-radius: 50%;
+  }
+
+  .back-to-top-btn .v-icon {
+    font-size: 28px;
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 960px) {
+    .navigation-main-title-left {
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      margin-top: -8px;
+      }
+
+      .back-to-top-container {
+      bottom: 15%;
+      right: 8px;
+    }
+
+    .back-to-top-btn .v-icon {
+      font-size: 24px;
+    }
+
+    .category-nav-container {
+      display: none;
+    }
+
+    .left-content-wrapper {
+      margin-left: 0;
+    }
+  }
+
+  .category-section {
+    width: 100%;
+  }
+
   .navigation-card {
     border-radius: 12px;
     backdrop-filter: blur(var(--leleo-blur));
     margin-bottom: 1.5rem;
+  }
+
+  .navigation-link-btn {
+    transition: all 0.3s ease;
+  }
+
+  .navigation-link-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.15);
   }
 
   .navigation-category-title {
@@ -213,15 +387,27 @@
     margin-bottom: 0.75rem;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
+/* 导航链接按钮样式 */
   .navigation-link-btn {
-    border-radius: 10px;
+    border-radius: 0;
     width: 100%;
+    height: 100%;
     text-align: left;
     transition: all 0.3s ease;
-    justify-content: flex-start;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    aspect-ratio: 1;
+  }
+
+  .navigation-link-btn .v-btn__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 
   .navigation-link-btn:hover {
@@ -281,6 +467,17 @@
     .home-btn-container {
       top: 10px;
       left: 10px;
+      gap: 8px;
+    }
+
+    .navigation-main-title-left {
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      margin-top: -8px;
+      }
     }
   }
-</style>
+ </style>

@@ -73,23 +73,12 @@ const config = {
 			{ "title": "海洋女孩", "preview": "/img/wallpaper/static/海洋女孩/image-pre.webp", "url": "/img/wallpaper/static/海洋女孩/image.png" },
 			{ "title": "书房夜晚", "preview": "/img/wallpaper/static/书房夜晚/image-pre.webp", "url": "/img/wallpaper/static/书房夜晚/image.png" },
 			{ "title": "安逸舒适", "preview": "/img/wallpaper/static/安逸舒适/image-pre.webp", "url": "/img/wallpaper/static/安逸舒适/image.png" },
-			{ "title": "jswcMaMj", "preview": "https://s21.ax1x.com/2025/07/23/pVGli59.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGli59.jpg" },
-			{ "title": "pgtTqoqq", "preview": "https://s21.ax1x.com/2025/07/23/pVGlmDO.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGlmDO.jpg" },
-			{ "title": "cvKMKhue", "preview": "https://s21.ax1x.com/2025/07/23/pVGlNqS.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGlNqS.jpg" },
-			{ "title": "XpxvQVoP", "preview": "https://s21.ax1x.com/2025/07/23/pVGlfIJ.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGlfIJ.jpg" },
-			{ "title": "fVEEjEOA", "preview": "https://s21.ax1x.com/2025/07/23/pVGlEgx.md.webp", "url": "https://s21.ax1x.com/2025/07/23/pVGlEgx.webp" },
-			{ "title": "jgnIKMpd", "preview": "https://s21.ax1x.com/2025/07/23/pVGldaQ.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGldaQ.jpg" },
-			{ "title": "mgqyySeh", "preview": "https://s21.ax1x.com/2025/07/23/pVGl82t.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGl82t.jpg" },
-			{ "title": "dSXZfZp", "preview": "https://s21.ax1x.com/2025/07/23/pVGlaVg.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGlaVg.jpg" },
 		],
 		picMobile: [
 			{ "title": "0001", "preview": "/img/wallpaper/static-mobile/0001/image-pre.webp", "url": "/img/wallpaper/static-mobile/0001/image.png" },
 			{ "title": "0002", "preview": "/img/wallpaper/static-mobile/0002/image-pre.webp", "url": "/img/wallpaper/static-mobile/0002/image.png" },
 			{ "title": "0003", "preview": "/img/wallpaper/static-mobile/0003/image-pre.webp", "url": "/img/wallpaper/static-mobile/0003/image.png" },
 			{ "title": "0004", "preview": "/img/wallpaper/static-mobile/0004/image-pre.webp", "url": "/img/wallpaper/static-mobile/0004/image.png" },
-			{ "title": "DfNHPPcc", "preview": "https://s21.ax1x.com/2025/07/23/pVG1uQ0.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVG1uQ0.jpg" },
-			{ "title": "cZZwzhis", "preview": "https://s21.ax1x.com/2025/07/23/pVG1Vij.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVG1Vij.jpg" },
-			{ "title": "aANKZHPX", "preview": "https://s21.ax1x.com/2025/07/23/pVGlIR1.md.jpg", "url": "https://s21.ax1x.com/2025/07/23/pVGlIR1.jpg" },
 		],
 		video: [
 			{
@@ -130,15 +119,75 @@ const config = {
 	//导航链接
 	navigationLinks: [
 		{
-			name: "网页工具",
+			name: "影视资源",
+			links: [
+				{ name: "低端影视", url: "https://ddys.la/", icon: "https://ddys.la/favicon.ico" },
+				{ name: "青禾影视", url: "https://tv.qhdaohang.cn/", icon: "https://tv.qhdaohang.cn/favicon.ico" },
+				{ name: "茉小影", url: "https://www.moxy.top/", icon: "https://www.moxy.top/favicon.ico" },
+				{ name: "努努影院", url: "https://nnyy.la/", icon: "https://nnyy.la/favicon.ico" },
+				{ name: "猴影工坊", url: "https://monkey-flix.com/", icon: "https://monkey-flix.com/favicon.ico" },
+				{ name: "嘀嗒影视", url: "https://www.didahd.pro/", icon: "https://www.didahd.pro/favicon.ico" },
+				{ name: "影猫の仓库", url: "https://www.ymck.pro/", icon: "https://www.ymck.pro/favicon.ico" },
+				{ name: "3Q影视", url: "https://qqqys.com/", icon: "https://qqqys.com/favicon.ico" },
+				{ name: "真狼影视", url: "https://www.zhenlang.cc/", icon: "https://www.zhenlang.cc/favicon.ico" },
+				{ name: "厂长资源", url: "https://www.czzymovie.com/", icon: "https://www.czzymovie.com/favicon.ico" },
+				{ name: "注视影视", url: "https://sszzyy.com/", icon: "https://sszzyy.com/favicon.ico" },
+				{ name: "影视工厂", url: "http://2.ysgc.top/", icon: "http://2.ysgc.top/favicon.ico" },
+				{ name: "修罗影视", url: "https://xl01.com.de/", icon: "https://xl01.com.de/favicon.ico" },
+				{ name: "LibreTV", url: "https://libretv.liumingye.cn/", icon: "https://libretv.liumingye.cn/favicon.ico" }
+			]
+		},
+		{
+			name: "音乐资源",
+			links: [
+				{ name: "SPlayer", url: "https://music.qier222.com/", icon: "https://music.qier222.com/favicon.ico" },
+				{ name: "铜钟", url: "https://tonzhon.com/", icon: "https://tonzhon.com/favicon.ico" },
+				{ name: "MusicFree", url: "https://musicfree.upup.fun/", icon: "https://musicfree.upup.fun/favicon.ico" },
+				{ name: "布谷音乐", url: "https://www.qqmp3.vip/", icon: "https://www.qqmp3.vip/favicon.ico" },
+				{ name: "OvO音乐", url: "https://ovoeo.cn/", icon: "https://ovoeo.cn/favicon.ico" },
+				{ name: "ZZ123音乐", url: "https://zz123.com/", icon: "https://zz123.com/favicon.ico" },
+				{ name: "网易云第三方", url: "https://netease-music.fe-mm.com/", icon: "https://netease-music.fe-mm.com/favicon.ico" }
+			]
+		},
+		{
+			name: "电子书阅读",
+			links: [
+				{ name: "安娜的档案", url: "https://zh.annas-archive.org/", icon: "https://zh.annas-archive.org/favicon.ico" },
+				{ name: "书格", url: "https://www.shuge.org/", icon: "https://www.shuge.org/favicon.ico" },
+				{ name: "鸠摩搜索", url: "https://www.jiumodiary.com/", icon: "https://www.jiumodiary.com/favicon.ico" },
+				{ name: "SoBooks", url: "https://sobooks.cc/", icon: "https://sobooks.cc/favicon.ico" },
+				{ name: "一单书", url: "https://yidanshu.com/", icon: "https://yidanshu.com/favicon.ico" },
+				{ name: "蜜蜂PDF", url: "https://honeypdf.com/", icon: "https://honeypdf.com/favicon.ico" },
+				{ name: "一起读书", url: "https://www.17dushu.cn/", icon: "https://www.17dushu.cn/favicon.ico" },
+				{ name: "飞库文学", url: "https://www.feiku6.com/", icon: "https://www.feiku6.com/favicon.ico" },
+				{ name: "电子书搜索", url: "https://tstrs.me/search", icon: "https://tstrs.me/favicon.ico" },
+				{ name: "Mobi图书", url: "https://mobitushu.cn/", icon: "https://mobitushu.cn/favicon.ico" },
+				{ name: "BookPlus", url: "https://bookplusapp.top/", icon: "https://bookplusapp.top/favicon.ico" },
+				{ name: "Kepub", url: "https://www.kepub.net/", icon: "https://www.kepub.net/favicon.ico" }
+			]
+		},
+		{
+			name: "实用工具",
 			links: [
 				{ name: "刘明野的工具箱", url: "https://tools.liumingye.cn/", icon: "https://tools.liumingye.cn/favicon.ico" },
 				{ name: "在线工具", url: "https://tool.lu/", icon: "https://tool.lu/favicon.ico" },
 				{ name: "ALL TO ALL", url: "https://www.alltoall.net/", icon: "https://www.alltoall.net/favicon.ico" },
 				{ name: "临时邮箱", url: "https://mail.cx/zh/", icon: "https://mail.cx/favicon.ico" },
 				{ name: "SM.MS", url: "https://smms.app/", icon: "https://smms.app/favicon.ico" },
-				{ name: "AbeimAPI", url: "https://res.abeim.cn/api/", icon: "https://res.abeim.cn/favicon.ico" },
-				{ name: "UApi", url: "https://uapis.cn/zh_cn/", icon: "https://uapis.cn/favicon.ico" }
+				{ name: "UApi", url: "https://uapis.cn/", icon: "https://uapis.cn/favicon.ico" },
+				{ name: "二维码生成", url: "https://cli.im/", icon: "https://cli.im/favicon.ico" },
+				{ name: "Removebg", url: "https://www.remove.bg/", icon: "https://www.remove.bg/favicon.ico" },
+				{ name: "MAS激活", url: "https://massgrave.dev/", icon: "https://massgrave.dev/favicon.ico" },
+				{ name: "MinerU", url: "https://mineru.net/OpenSourceTools/Extractor", icon: "https://mineru.net/favicon.ico" },
+				{ name: "Smallpdf", url: "https://smallpdf.com/cn", icon: "https://smallpdf.com/favicon.ico" },
+				{ name: "马克配音", url: "https://ttsmaker.cn/", icon: "https://ttsmaker.cn/favicon.ico" },
+				{ name: "图改改", url: "https://tugaigai.com/", icon: "https://tugaigai.com/favicon.ico" },
+				{ name: "QwertyLearner", url: "https://qwerty.liumingye.cn/", icon: "https://qwerty.liumingye.cn/favicon.ico" },
+				{ name: "Wormhole", url: "https://wormhole.app/", icon: "https://wormhole.app/favicon.ico" },
+				{ name: "云鸽传送", url: "https://yunge.in/", icon: "https://yunge.in/favicon.ico" },
+				{ name: "图片拼接", url: "https://kejiweixun.com/tools/merge-images", icon: "https://kejiweixun.com/favicon.ico" },
+				{ name: "LookScanned", url: "https://lookscanned.io/scan", icon: "https://lookscanned.io/favicon.ico" },
+				{ name: "音乐解锁", url: "https://unlock-music.liumingye.cn/", icon: "https://unlock-music.liumingye.cn/favicon.ico" }
 			]
 		},
 		{
@@ -148,17 +197,9 @@ const config = {
 				{ name: "Flaticon", url: "https://www.flaticon.com/", icon: "https://www.flaticon.com/favicon.ico" },
 				{ name: "可画", url: "https://www.canva.cn/", icon: "https://www.canva.cn/favicon.ico" },
 				{ name: "Color Hunt", url: "https://colorhunt.co/", icon: "https://colorhunt.co/favicon.ico" },
-				{ name: "TinyPNG", url: "https://tinify.cn/", icon: "https://tinify.cn/favicon.ico" }
-			]
-		},
-		{
-			name: "影音游戏",
-			links: [
-				{ name: "小云搜索", url: "https://yunso.net/", icon: "https://yunso.net/favicon.ico" },
-				{ name: "千帆搜索", url: "https://www.niceso.fun/", icon: "https://www.niceso.fun/favicon.ico" },
-				{ name: "音乐搜索器", url: "http://www.xmsj.org/", icon: "http://www.xmsj.org/favicon.ico" },
-				{ name: "Switch520", url: "https://www.gamer520.com/", icon: "https://www.gamer520.com/favicon.ico" },
-				{ name: "flysheep资源避难所", url: "https://www.flysheep6.com/", icon: "https://www.flysheep6.com/favicon.ico" }
+				{ name: "TinyPNG", url: "https://tinify.cn/", icon: "https://tinify.cn/favicon.ico" },
+				{ name: "字体天下", url: "https://www.fonts.net.cn/", icon: "https://www.fonts.net.cn/favicon.ico" },
+				{ name: "彼岸桌面", url: "https://www.netbian.com/", icon: "https://www.netbian.com/favicon.ico" }
 			]
 		},
 		{
@@ -166,7 +207,14 @@ const config = {
 			links: [
 				{ name: "神奇海螺试验场", url: "https://lab.magiconch.com/", icon: "https://lab.magiconch.com/favicon.ico" },
 				{ name: "Life Restart", url: "https://liferestart.syaro.io/public/", icon: "https://liferestart.syaro.io/favicon.ico" },
-				{ name: "FakeUpdate", url: "https://fakeupdate.net/", icon: "https://fakeupdate.net/favicon.ico" }
+				{ name: "FakeUpdate", url: "https://fakeupdate.net/", icon: "https://fakeupdate.net/favicon.ico" },
+				{ name: "今日热榜", url: "https://tophub.today/", icon: "https://tophub.today/favicon.ico" },
+				{ name: "Freegame", url: "https://freegame.tw/", icon: "https://freegame.tw/favicon.ico" },
+				{ name: "在线DOS游戏", url: "https://dos.zczc.cz/", icon: "https://dos.zczc.cz/favicon.ico" },
+				{ name: "老游戏在线玩", url: "https://zaixianwan.app/", icon: "https://zaixianwan.app/favicon.ico" },
+				{ name: "CrazyGames", url: "https://www.crazygames.com/", icon: "https://www.crazygames.com/favicon.ico" },
+				{ name: "Poki小游戏", url: "https://poki.com/", icon: "https://poki.com/favicon.ico" },
+				{ name: "合成大西瓜", url: "https://daxigua.pages.dev/", icon: "https://daxigua.pages.dev/favicon.ico" }
 			]
 		}
 	],
