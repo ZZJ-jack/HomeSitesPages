@@ -19,8 +19,8 @@
       <v-btn class="zzj-nav-btn" color="var(--leleo-vcard-color)" variant="tonal"
         icon="mdi-home" @click="goHome"
       ></v-btn>
-      <span class="navigation-main-title-left">网址导航</span>
       <a href="https://blog.zzjjack.us.kg" target="_blank" class="blog-link">博客</a>
+      <span class="navigation-main-title-left">网址导航</span>
     </div>
 
     <div class="floating-switch-container">
@@ -166,25 +166,28 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
-  /* 博客链接样式 */
+  /* 博客链接 */
   .blog-link {
     font-family: "ZHBGBXT";
-    font-size: 1.2rem;
-    color: var(--leleo-vcard-color);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #ffffff;
     text-decoration: none;
-    margin-left: 1rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--leleo-vcard-color);
-    border-radius: 8px;
     transition: all 0.3s ease;
+    padding: 0 12px;
     height: 40px;
     display: flex;
     align-items: center;
+    border-radius: 4px;
+    background-color: transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .blog-link:hover {
-    background: var(--leleo-vcard-color);
-    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
   }
 
   /* 左上角网址导航标题样式 */
